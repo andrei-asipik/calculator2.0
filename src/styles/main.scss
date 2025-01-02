@@ -1,0 +1,79 @@
+@use "./scss/variables" as *;
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  --bg-color: #{$color-background-dark};
+  --bg-display-color: #{$color-background-display-dark};
+  --btn-color: #{$color-button-dark};
+  --btn-text-color: #{$color-button-text-dark};
+
+  &[data-theme="light"] {
+    --bg-color: #{$color-background-light};
+    --bg-display-color: #{$color-background-display-light};
+    --btn-color: #{$color-button-light};
+    --btn-text-color: #{$color-button-text-light};
+  }
+}
+body {
+  font-family: Arial, sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: var(--bg-color);
+}
+
+.calculator {
+  // width: 300px;
+  width: auto;
+  border-radius: 10px;
+  overflow: hidden;
+  position: relative;
+}
+
+#display {
+  background: var(--bg-display-color);
+  color: var(--btn-text-color);
+  text-align: right;
+  padding: 20px;
+  font-size: 36px;
+  border: 1px solid var(--bg-display-color);
+}
+
+#theme-toggle {
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  cursor: pointer;
+  background-color: transparent;
+  font-size: 16px;
+  user-select: none;
+}
+
+.buttons {
+  display: grid;
+  // grid-template-columns: repeat(10, 1fr);
+  grid-template-columns: repeat(4, 1fr);
+
+  .button {
+    padding: 20px;
+    font-size: 24px;
+    border: 1px solid var(--bg-display-color);
+    cursor: pointer;
+    background-color: var(--btn-color);
+    color: var(--btn-text-color);
+  }
+
+  .orange {
+    background-color: $color-button-orange;
+  }
+
+  .zero {
+    grid-column: span 2;
+  }
+}
