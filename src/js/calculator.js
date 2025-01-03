@@ -6,6 +6,11 @@ const commandMap = {
   operator: (value) => new ChooseOperatorCommand(calculator, value),
   equals: () => new EqualsCommand(calculator),
   clear: () => new ClearCommand(calculator),
+  "toggle-sign": (value) => new ToggleSignCommand(calculator, value),
+  percent: () => new PercentCommand(calculator),
+  square: () => new PowerCommand(calculator, 2),
+  cube: () => new PowerCommand(calculator, 3),
+  power: (value) => new PowerCommand(calculator, value),
 };
 
 document.querySelectorAll(".button").forEach((button) => {
@@ -47,7 +52,6 @@ class Calculator {
     this.operator = operator;
     this.pendingValue = this.currentValue;
     this.currentValue = "0";
-    console.log("chooseOperator executed, operator:", this.operator);
   }
 
   calculate() {
@@ -77,13 +81,34 @@ class Calculator {
     this.currentValue = result.toString();
     this.operator = null;
     this.pendingValue = null;
-    console.log("calculate executed, result:", this.currentValue);
     this.updateDisplay();
   }
 
   updateDisplay() {
     this.displayElement.textContent = this.currentValue;
-    console.log("updateDisplay executed, display:", this.currentValue);
+  }
+
+  toggleSign() {
+    if (this.currentValue === "0") return;
+    this.currentValue = (parseFloat(this.currentValue) * -1).toString();
+    this.updateDisplay();
+  }
+
+  calculatePercent() {
+    if (this.currentValue === "0") return;
+    this.currentValue = (parseFloat(this.currentValue) / 100).toString();
+    this.updateDisplay();
+  }
+
+  calculatePower(exponent) {
+    const base = parseFloat(this.currentValue);
+    if (isNaN(base) || isNaN(exponent)) return;
+
+    this.currentValue = (base ** exponent).toString();
+    this.updateDisplay();
+    console.log(
+      `calculatePower executed: ${base}^${exponent} = ${this.currentValue}`,
+    );
   }
 }
 
@@ -101,7 +126,6 @@ class AppendNumberCommand extends Command {
   }
 
   execute() {
-    // console.log("AppendNumberCommand executed with:", this.number);
     this.calculator.appendNumber(this.number);
   }
 }
@@ -114,7 +138,6 @@ class ChooseOperatorCommand extends Command {
   }
 
   execute() {
-    // console.log("ChooseOperatorCommand executed with:", this.operator);
     this.calculator.chooseOperator(this.operator);
   }
 }
@@ -137,5 +160,39 @@ class ClearCommand extends Command {
 
   execute() {
     this.calculator.reset();
+  }
+}
+class ToggleSignCommand extends Command {
+  constructor(calculator) {
+    super();
+    this.calculator = calculator;
+  }
+
+  execute() {
+    this.calculator.toggleSign();
+  }
+}
+
+class PercentCommand extends Command {
+  constructor(calculator) {
+    super();
+    this.calculator = calculator;
+  }
+
+  execute() {
+    this.calculator.calculatePercent();
+  }
+}
+
+class PowerCommand extends Command {
+  constructor(calculator, exponent) {
+    super();
+    this.calculator = calculator;
+    this.exponent = parseFloat(exponent);
+  }
+
+  execute() {
+    console.log(`PowerCommand exponent: ${this.exponent}`);
+    this.calculator.calculatePower(this.exponent);
   }
 }
