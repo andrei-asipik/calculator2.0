@@ -1,7 +1,7 @@
 const displayElement = document.getElementById("display");
 const calculator = new Calculator(displayElement);
 
-const commandMap = {
+const commandTypes = {
   number: (value) => new AppendNumberCommand(calculator, value),
   operator: (value) => new ChooseOperatorCommand(calculator, value),
   equals: () => new EqualsCommand(calculator),
@@ -10,14 +10,17 @@ const commandMap = {
   percent: () => new PercentCommand(calculator),
   square: () => new PowerCommand(calculator, 2),
   cube: () => new PowerCommand(calculator, 3),
-  power: (value) => new PowerCommand(calculator, value),
+  power: () => new ChooseOperatorCommand(calculator, "power"),
+  "square-root": () => new PowerCommand(calculator, 1 / 2),
+  "cube-root": () => new PowerCommand(calculator, 1 / 3),
+  root: () => new ChooseOperatorCommand(calculator, "root"),
 };
 
 document.querySelectorAll(".button").forEach((button) => {
   const action = button.dataset.action;
   const value = button.textContent.trim();
   button.addEventListener("click", () => {
-    const commandFactory = commandMap[action];
+    const commandFactory = commandTypes[action];
     if (commandFactory) {
       const command = commandFactory(value);
       command.execute();
@@ -36,9 +39,13 @@ class Calculator {
     this.pendingValue = null;
     this.operator = null;
     this.updateDisplay();
+    this.isResultShown = false;
   }
 
   appendNumber(number) {
+    if (this.isResultShown) {
+      this.reset();
+    }
     this.currentValue =
       this.currentValue === "0" ? number : this.currentValue + number;
     this.updateDisplay();
@@ -52,6 +59,7 @@ class Calculator {
     this.operator = operator;
     this.pendingValue = this.currentValue;
     this.currentValue = "0";
+    this.isResultShown = false;
   }
 
   calculate() {
@@ -74,6 +82,13 @@ class Calculator {
       case "÷":
         result = previous / current;
         break;
+      case "power":
+        result = previous ** current;
+        break;
+      case "root":
+        result = previous ** (1 / current);
+        break;
+
       default:
         return;
     }
@@ -81,6 +96,7 @@ class Calculator {
     this.currentValue = result.toString();
     this.operator = null;
     this.pendingValue = null;
+    this.isResultShown = true;
     this.updateDisplay();
   }
 
@@ -92,11 +108,13 @@ class Calculator {
     if (this.currentValue === "0") return;
     this.currentValue = (parseFloat(this.currentValue) * -1).toString();
     this.updateDisplay();
+    this.isResultShown = true;
   }
 
   calculatePercent() {
     if (this.currentValue === "0") return;
     this.currentValue = (parseFloat(this.currentValue) / 100).toString();
+    this.isResultShown = true;
     this.updateDisplay();
   }
 
@@ -106,9 +124,7 @@ class Calculator {
 
     this.currentValue = (base ** exponent).toString();
     this.updateDisplay();
-    console.log(
-      `calculatePower executed: ${base}^${exponent} = ${this.currentValue}`,
-    );
+    this.isResultShown = true;
   }
 }
 
@@ -192,7 +208,6 @@ class PowerCommand extends Command {
   }
 
   execute() {
-    console.log(`PowerCommand exponent: ${this.exponent}`);
     this.calculator.calculatePower(this.exponent);
   }
 }
