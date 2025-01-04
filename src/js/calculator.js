@@ -14,6 +14,12 @@ const commandTypes = {
   "square-root": () => new PowerCommand(calculator, 1 / 2),
   "cube-root": () => new PowerCommand(calculator, 1 / 3),
   root: () => new ChooseOperatorCommand(calculator, "root"),
+  fraction: () => new FractionCommand(calculator),
+  factorial: () => new FactorialCommand(calculator),
+  "memory-clear": () => new MemoryCommand(calculator, "MC"),
+  "memory-add": () => new MemoryCommand(calculator, "M+"),
+  "memory-subtract": () => new MemoryCommand(calculator, "M-"),
+  "memory-recall": () => new MemoryCommand(calculator, "MR"),
 };
 
 document.querySelectorAll(".button").forEach((button) => {
@@ -31,6 +37,7 @@ document.querySelectorAll(".button").forEach((button) => {
 class Calculator {
   constructor(displayElement) {
     this.displayElement = displayElement;
+    this.memoryValue = 0;
     this.reset();
   }
 
@@ -126,6 +133,51 @@ class Calculator {
     this.updateDisplay();
     this.isResultShown = true;
   }
+
+  calculateFraction() {
+    if (this.currentValue === "0") return;
+    this.currentValue = (1 / parseFloat(this.currentValue)).toString();
+    this.isResultShown = true;
+    this.updateDisplay();
+  }
+
+  calculateFactorial() {
+    const current = parseInt(this.currentValue);
+
+    if (isNaN(current) || current < 0) {
+      this.currentValue = "Error";
+    } else {
+      let result = 1;
+      for (let i = 1; i <= current; i++) {
+        result *= i;
+      }
+      this.currentValue = result.toString();
+    }
+
+    this.updateDisplay();
+    this.isResultShown = true;
+  }
+
+  handleMemory(action) {
+    const current = parseFloat(this.currentValue);
+
+    switch (action) {
+      case "MC":
+        this.memoryValue = 0;
+        break;
+      case "M+":
+        this.memoryValue += current;
+        break;
+      case "M-":
+        this.memoryValue -= current;
+        break;
+      case "MR":
+        this.currentValue = this.memoryValue.toString();
+        this.updateDisplay();
+        break;
+      default:
+    }
+  }
 }
 
 class Command {
@@ -209,5 +261,38 @@ class PowerCommand extends Command {
 
   execute() {
     this.calculator.calculatePower(this.exponent);
+  }
+}
+
+class FractionCommand extends Command {
+  constructor(calculator) {
+    super();
+    this.calculator = calculator;
+  }
+
+  execute() {
+    this.calculator.calculateFraction();
+  }
+}
+class FactorialCommand extends Command {
+  constructor(calculator) {
+    super();
+    this.calculator = calculator;
+  }
+
+  execute() {
+    this.calculator.calculateFactorial();
+  }
+}
+
+class MemoryCommand extends Command {
+  constructor(calculator, action) {
+    super();
+    this.calculator = calculator;
+    this.action = action;
+  }
+
+  execute() {
+    this.calculator.handleMemory(this.action);
   }
 }

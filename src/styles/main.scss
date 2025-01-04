@@ -29,7 +29,6 @@ body {
 }
 
 .calculator {
-  // width: 300px;
   width: auto;
   border-radius: 10px;
   overflow: hidden;
@@ -57,8 +56,7 @@ body {
 
 .buttons {
   display: grid;
-  // grid-template-columns: repeat(10, 1fr);
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(7, 1fr);
 
   .button {
     padding: 20px;
@@ -69,11 +67,14 @@ body {
     color: var(--btn-text-color);
   }
 
+  .button:disabled {
+    cursor: auto;
+  }
   .orange {
     background-color: $color-button-orange;
   }
 
-  .zero {
+  .large {
     grid-column: span 2;
   }
 }
