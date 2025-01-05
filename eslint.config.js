@@ -40,12 +40,4 @@ export default [
       "prettier/prettier": ["error"],
     },
   },
-  {
-    files: ["**/*.test.js", "**/*.spec.js"],
-    languageOptions: {
-      globals: {
-        ...globals.jest,
-      },
-    },
-  },
 ];
