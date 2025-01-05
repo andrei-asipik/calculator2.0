@@ -51,7 +51,12 @@ export class Calculator {
         result = previous * current;
         break;
       case "÷":
-        result = previous / current;
+        if (current === 0) {
+          result = "Error";
+        } else result = previous / current;
+        break;
+      case "%":
+        result = (previous * current) / 100;
         break;
       case "power":
         result = previous ** current;
@@ -80,13 +85,6 @@ export class Calculator {
     this.currentValue = (parseFloat(this.currentValue) * -1).toString();
     this.updateDisplay();
     this.isResultShown = true;
-  }
-
-  calculatePercent() {
-    if (this.currentValue === "0") return;
-    this.currentValue = (parseFloat(this.currentValue) / 100).toString();
-    this.isResultShown = true;
-    this.updateDisplay();
   }
 
   calculatePower(exponent) {
@@ -118,6 +116,15 @@ export class Calculator {
       this.currentValue = result.toString();
     }
 
+    this.updateDisplay();
+    this.isResultShown = true;
+  }
+
+  calculateTenPower() {
+    const exponent = parseFloat(this.currentValue);
+    if (isNaN(exponent)) return;
+
+    this.currentValue = (10 ** exponent).toString();
     this.updateDisplay();
     this.isResultShown = true;
   }

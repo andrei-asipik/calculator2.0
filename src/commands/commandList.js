@@ -4,21 +4,21 @@ import {
   ClearCommand,
   EqualsCommand,
   ToggleSignCommand,
-  PercentCommand,
   PowerCommand,
   FractionCommand,
   FactorialCommand,
   MemoryCommand,
+  TenPowerCommand,
 } from "./commands.js";
 
-export const createCommandTypes = (calculator) => {
+export const createCommandList = (calculator) => {
   return {
     number: (value) => new AppendNumberCommand(calculator, value),
     operator: (value) => new ChooseOperatorCommand(calculator, value),
     equals: () => new EqualsCommand(calculator),
     clear: () => new ClearCommand(calculator),
     "toggle-sign": (value) => new ToggleSignCommand(calculator, value),
-    percent: () => new PercentCommand(calculator),
+    percent: () => new ChooseOperatorCommand(calculator, "%"),
     square: () => new PowerCommand(calculator, 2),
     cube: () => new PowerCommand(calculator, 3),
     power: () => new ChooseOperatorCommand(calculator, "power"),
@@ -27,6 +27,7 @@ export const createCommandTypes = (calculator) => {
     root: () => new ChooseOperatorCommand(calculator, "root"),
     fraction: () => new FractionCommand(calculator),
     factorial: () => new FactorialCommand(calculator),
+    "ten-power": () => new TenPowerCommand(calculator),
     "memory-clear": () => new MemoryCommand(calculator, "MC"),
     "memory-add": () => new MemoryCommand(calculator, "M+"),
     "memory-subtract": () => new MemoryCommand(calculator, "M-"),

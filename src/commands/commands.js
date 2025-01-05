@@ -1,7 +1,5 @@
 export class Command {
-  execute() {
-    throw new Error("Метод execute должен быть реализован.");
-  }
+  execute() {}
 }
 
 export class AppendNumberCommand extends Command {
@@ -59,17 +57,6 @@ export class ToggleSignCommand extends Command {
   }
 }
 
-export class PercentCommand extends Command {
-  constructor(calculator) {
-    super();
-    this.calculator = calculator;
-  }
-
-  execute() {
-    this.calculator.calculatePercent();
-  }
-}
-
 export class PowerCommand extends Command {
   constructor(calculator, exponent) {
     super();
@@ -79,6 +66,17 @@ export class PowerCommand extends Command {
 
   execute() {
     this.calculator.calculatePower(this.exponent);
+  }
+}
+
+export class TenPowerCommand extends Command {
+  constructor(calculator) {
+    super();
+    this.calculator = calculator;
+  }
+
+  execute() {
+    this.calculator.calculateTenPower();
   }
 }
 

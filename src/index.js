@@ -1,12 +1,12 @@
 import "./thems/thems.js";
 import "./styles/main.scss";
-import { createCommandTypes } from "./commands/commandTypes.js";
+import { createCommandList } from "./commands/commandList.js";
 import { Calculator } from "./calculator/calculator.js";
 
 const displayElement = document.getElementById("display");
 const calculator = new Calculator(displayElement);
 
-const commandTypes = createCommandTypes(calculator);
+const commandTypes = createCommandList(calculator);
 
 document.querySelectorAll(".button").forEach((button) => {
   const action = button.dataset.action;
