@@ -10,12 +10,14 @@ html {
   --bg-color: #{$color-background-dark};
   --bg-display-color: #{$color-background-display-dark};
   --btn-color: #{$color-button-dark};
+  --btn-number-color: #{$color-button-number-dark};
   --btn-text-color: #{$color-button-text-dark};
 
   &[data-theme="light"] {
     --bg-color: #{$color-background-light};
     --bg-display-color: #{$color-background-display-light};
     --btn-color: #{$color-button-light};
+    --btn-number-color: #{$color-button-number-light};
     --btn-text-color: #{$color-button-text-light};
   }
 }
@@ -76,5 +78,10 @@ body {
 
   .large {
     grid-column: span 2;
+  }
+
+  .button[data-action="number"],
+  .button[data-action="decimal"] {
+    background-color: var(--btn-number-color);
   }
 }

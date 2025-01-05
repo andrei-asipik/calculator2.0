@@ -137,14 +137,15 @@ export class Calculator {
         this.memoryValue = 0;
         break;
       case "M+":
-        this.memoryValue += current;
+        if (!isNaN(current)) this.memoryValue += current;
         break;
       case "M-":
-        this.memoryValue -= current;
+        if (!isNaN(current)) this.memoryValue -= current;
         break;
       case "MR":
         this.currentValue = this.memoryValue.toString();
         this.updateDisplay();
+        this.isResultShown = true;
         break;
       default:
     }
