@@ -22,6 +22,18 @@ export class Calculator {
     this.updateDisplay();
   }
 
+  appendDecimal() {
+    if (this.isResultShown) {
+      this.reset();
+    }
+
+    if (this.currentValue.includes(".")) return;
+
+    this.currentValue =
+      this.currentValue === "" ? "0." : this.currentValue + ".";
+    this.updateDisplay();
+  }
+
   chooseOperator(operator) {
     if (this.currentValue === "") return;
     if (this.pendingValue !== null) {

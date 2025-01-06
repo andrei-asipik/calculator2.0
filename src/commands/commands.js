@@ -14,6 +14,17 @@ export class AppendNumberCommand extends Command {
   }
 }
 
+export class AppendDecimalCommand extends Command {
+  constructor(calculator) {
+    super();
+    this.calculator = calculator;
+  }
+
+  execute() {
+    this.calculator.appendDecimal();
+  }
+}
+
 export class ChooseOperatorCommand extends Command {
   constructor(calculator, operator) {
     super();

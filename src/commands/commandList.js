@@ -9,11 +9,13 @@ import {
   FactorialCommand,
   MemoryCommand,
   TenPowerCommand,
+  AppendDecimalCommand,
 } from "./commands.js";
 
 export const createCommandList = (calculator) => {
   return {
     number: (value) => new AppendNumberCommand(calculator, value),
+    decimal: () => new AppendDecimalCommand(calculator),
     operator: (value) => new ChooseOperatorCommand(calculator, value),
     equals: () => new EqualsCommand(calculator),
     clear: () => new ClearCommand(calculator),
