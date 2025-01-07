@@ -35,13 +35,17 @@ export class Calculator {
   }
 
   chooseOperator(operator) {
-    if (this.currentValue === "") return;
-    if (this.pendingValue !== null) {
+    if (this.currentValue === "") {
+      this.operator = operator;
+      return;
+    }
+    if (this.pendingValue !== "null") {
       this.calculate();
     }
     this.operator = operator;
     this.pendingValue = this.currentValue;
-    this.currentValue = "0";
+
+    this.currentValue = "";
     this.isResultShown = false;
   }
 
